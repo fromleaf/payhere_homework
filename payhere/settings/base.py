@@ -52,6 +52,7 @@ INSTALLED_PACKAGES = [
 ]
 
 PAYHERE_APPS = [
+    'accounts',
 ]
 
 INSTALLED_APPS = (
@@ -104,6 +105,7 @@ WSGI_APPLICATION = 'payhere.wsgi.application'
 AUTHENTICATION_BACKEND = [
     'django.contrib.auth.backends.ModelBackend'
 ]
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
