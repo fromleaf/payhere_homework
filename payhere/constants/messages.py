@@ -1,0 +1,4 @@
+ALREADY_REGISTERED_CELLPHONE = (
+    'ALREADY_REGISTERED_CELLPHONE',
+    '이미 등록된 핸드폰 번호입니다.'
+)
