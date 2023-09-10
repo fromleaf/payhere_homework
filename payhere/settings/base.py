@@ -39,11 +39,13 @@ DJANGO_DEFAULT_PACKAGES = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
 ]
 
 INSTALLED_PACKAGES = [
+    'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
