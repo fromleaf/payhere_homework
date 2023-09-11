@@ -84,7 +84,7 @@ class Product(models.Model):
         help_text="유통기한"
     )
     size = models.CharField(
-        choices=PRODUCT_SIZE_CHOICES,
+        choices=sorted(PRODUCT_SIZE_CHOICES),
         default=const.PRODUCT_SIZE_SMALL,
         max_length=const.MAX_LENGTH_DEFAULT_CHAR,
         help_text="사이즈"
