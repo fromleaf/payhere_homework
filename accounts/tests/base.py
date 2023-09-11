@@ -1,10 +1,14 @@
 from django.urls import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import (
+    APIClient,
+    APITestCase
+)
 
 
 class BaseAccountTest(APITestCase):
 
     def create_user_by_signup_api(self, cellphone, password, name=None):
+        client = APIClient()
         url = reverse('signup')
         data = {
             'cellphone': cellphone,
@@ -14,7 +18,7 @@ class BaseAccountTest(APITestCase):
         if name:
             data['name'] = name
 
-        response = self.client.post(url, data, format='json')
+        response = client.post(url, data, format='json')
         return response
 
     def setUp(self):

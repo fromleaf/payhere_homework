@@ -45,6 +45,7 @@ DJANGO_DEFAULT_PACKAGES = [
 ]
 
 INSTALLED_PACKAGES = [
+    'django_filters',
     'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
@@ -54,6 +55,7 @@ INSTALLED_PACKAGES = [
 
 PAYHERE_APPS = [
     'accounts',
+    'products',
 ]
 
 INSTALLED_APPS = (
