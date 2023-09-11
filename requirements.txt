@@ -1,5 +1,5 @@
 asgiref==3.7.2
-Django==4.2.5
+Django==4.1.11
 django-filter==23.2
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
@@ -7,9 +7,11 @@ drf-yasg==1.21.7
 inflection==0.5.1
 jamo==0.4.1
 Markdown==3.4.4
+mysqlclient==2.2.0
 packaging==23.1
 PyJWT==2.8.0
 pytz==2023.3.post1
 PyYAML==6.0.1
 sqlparse==0.4.4
 uritemplate==4.1.1
+uWSGI==2.0.22

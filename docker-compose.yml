@@ -1,0 +1,50 @@
+version: '3'
+
+volumes:
+  database: {}
+  static: {}
+  media: {}
+
+services:
+  database:
+    image: mysql:5.7
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_DATABASE: payhere
+      MYSQL_ROOT_PASSWORD: 12345
+    ports:
+      - '3306:3306'
+    volumes:
+      - database:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
+  payhere-server:
+    image: payhere-server:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '8000:8000'
+    volumes:
+      - static:/payhere-server/payhere/static
+      - media:/payhere-server/payhere/media
+    depends_on:
+      - database
+
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    volumes:
+      - ./deploy/wait-for-it.sh:/root/deploy/wait-for-it.sh
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - static:/payhere-server/payhere/static
+      - media:/payhere-server/payhere/media
+    ports:
+      - '80:80'
+    command: /bin/bash -c "/root/deploy/wait-for-it.sh -t 0 payhere-server:8000 && nginx -g 'daemon off;'"
+    depends_on:
+      - payhere-server
