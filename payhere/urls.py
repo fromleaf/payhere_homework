@@ -21,6 +21,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
 import accounts.urls as accounts_urls
+import products.urls as products_urls
 from payhere.core.permissions import AllowAny
 
 schema_view = get_schema_view(
@@ -44,4 +45,5 @@ urlpatterns = [
 
 urlpatterns += [
     path('accounts/', include(accounts_urls)),
+    path('products/', include(products_urls)),
 ]

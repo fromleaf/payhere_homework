@@ -2,11 +2,10 @@ import json
 
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIClient
-from rest_framework_simplejwt.tokens import AccessToken
 
 from accounts.models import User
 from accounts.tests.base import BaseAccountTest
+from payhere.utils import util_test
 
 
 class TestSign(BaseAccountTest):
@@ -17,19 +16,6 @@ class TestSign(BaseAccountTest):
         }
         response = self.client.post(url, data, format='json')
         return response.status_code == status.HTTP_200_OK
-
-    def _get_token(self, cellphone, password):
-        url = reverse('token_obtain_pair')
-        data = {
-            'cellphone': cellphone,
-            'password': password,
-        }
-        response = self.client.post(url, data, format='json')
-        if response.status_code != status.HTTP_200_OK:
-            return
-
-        token = json.loads(response.content.decode())
-        return token
 
     def test_signup(self):
         url = reverse('signup')
@@ -58,7 +44,7 @@ class TestSign(BaseAccountTest):
         self.assertEqual(is_verified_token, True)
 
     def test_token_refresh(self):
-        token = self._get_token(self.TESTER_CELLPHONE, self.TESTER_PASSWORD)
+        token = util_test.get_token(self.TESTER_CELLPHONE, self.TESTER_PASSWORD)
 
         url = reverse('token_refresh')
         data = {
@@ -72,7 +58,7 @@ class TestSign(BaseAccountTest):
         self.assertEqual(is_verified_token, True)
 
     def test_logout(self):
-        token = self._get_token(self.TESTER_CELLPHONE, self.TESTER_PASSWORD)
+        token = util_test.get_token(self.TESTER_CELLPHONE, self.TESTER_PASSWORD)
 
         url = reverse('logout')
         data = {

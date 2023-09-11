@@ -1,18 +1,15 @@
-from rest_framework import (
-    generics,
-    status,
-    views
-)
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.serializers import SignupSerializer
 from payhere.core.exceptions import AlreadyRegisteredCellphone
+from payhere.core.generics import BaseCreateAPIView
 from payhere.core.permissions import AllowAny
-from rest_framework.exceptions import ErrorDetail, ValidationError
+from payhere.core.views import BaseAPIView
 
 
-class SignupViewSet(generics.CreateAPIView):
+class SignupViewSet(BaseCreateAPIView):
     serializer_class = SignupSerializer
     permission_classes = [AllowAny]
 
@@ -25,7 +22,7 @@ class SignupViewSet(generics.CreateAPIView):
         return response
 
 
-class LogoutViewSet(views.APIView):
+class LogoutViewSet(BaseAPIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
