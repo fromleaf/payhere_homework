@@ -6,7 +6,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from accounts.models import User
-from accounts.tests.test_sign import TestSign
 from payhere.constants import const
 from payhere.utils import util_test
 from products.models import Product
@@ -30,6 +29,8 @@ class ProductTest(BaseProductTest):
         url = reverse('seller-products-list')
         response = client.get(url)
         content = json.loads(response.content.decode())
+
+        # HTTP status 확인 및 요청한 products data 및 next cursor 확인
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(content)
         self.assertIsNotNone(content['data']['next'])
@@ -50,6 +51,8 @@ class ProductTest(BaseProductTest):
         }
         response = client.post(url, data=data, format='json')
         content = json.loads(response.content.decode())
+
+        # 생성됐다는 HTTP status 확인 및 생성된 product 정보 확인
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(content)
 
@@ -77,6 +80,7 @@ class ProductTest(BaseProductTest):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(content)
 
+        # 업데이트 전 product 정보와 업데이트 완료 후 product 정보 비교
         updated_product_id = content['data']['id']
         after_update_product = Product.objects.get(id=updated_product_id)
         self.assertNotEquals(before_update_product.category, after_update_product.category)
@@ -93,9 +97,12 @@ class ProductTest(BaseProductTest):
             'seller-products-detail',
             args=[product.id]
         )
+
+        # 삭제됐다는 HTTP status 확인
         response = client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+        # 삭제된 product의 deleted_at와 is_deleted 값 확인
         deleted_product = Product.objects.get(id=product.id)
         self.assertIsNotNone(deleted_product.deleted_at)
         self.assertEqual(deleted_product.is_deleted, True)
@@ -113,6 +120,7 @@ class ProductTest(BaseProductTest):
             self.assertIsNotNone(content)
             return content
 
+        # 각각의 단어 및 초성 검색 결과 확인
         result = search_by_keyword('슈크림')
         self.assertNotEqual(result['data']['results'], [])
 

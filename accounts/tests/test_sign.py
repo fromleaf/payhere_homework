@@ -28,6 +28,7 @@ class TestSign(BaseAccountTest):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        # signup API 통해 생성한 user가 생성 됐는지 확인
         tester = User.objects.get(cellphone=tester_cellphone)
         self.assertEqual(tester.cellphone, tester_cellphone)
 
@@ -40,6 +41,8 @@ class TestSign(BaseAccountTest):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         token = json.loads(response.content.decode())
+
+        # 로그인 후 token 유효한지 확인
         is_verified_token = self._is_verified_token(token['access'])
         self.assertEqual(is_verified_token, True)
 
@@ -53,6 +56,7 @@ class TestSign(BaseAccountTest):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # 새로 발급 받은 token이 유효한지 확인
         new_token = json.loads(response.content.decode())
         is_verified_token = self._is_verified_token(new_token['refresh'])
         self.assertEqual(is_verified_token, True)
@@ -67,5 +71,6 @@ class TestSign(BaseAccountTest):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_205_RESET_CONTENT)
 
+        # 로그아웃 후 사용한 token 유효한지 확인 -> 사용 불가능해야 함
         is_verified_token = self._is_verified_token(token['refresh'])
         self.assertEqual(is_verified_token, False)

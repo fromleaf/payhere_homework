@@ -2,14 +2,15 @@ from django.utils import timezone
 from rest_framework.test import APITestCase
 
 from accounts.models import User
-from accounts.tests.base import BaseAccountTest
 from payhere.constants import const
-from payhere.utils import util_text
+from payhere.utils import (
+    util_test
+)
 from products.models import Product
 
 
 class BaseProductTest(APITestCase):
-    def create_seller_product(self, cellphone, name):
+    def _create_seller_product(self, cellphone, name):
         user = User.objects.get(cellphone=cellphone)
 
         data = {
@@ -27,7 +28,7 @@ class BaseProductTest(APITestCase):
         created_product = Product.objects.create(**data)
         return created_product
 
-    def create_seller_products(self, cellphone, count):
+    def _create_seller_products(self, cellphone, count):
         user = User.objects.get(cellphone=cellphone)
 
         product_list = []
@@ -52,12 +53,11 @@ class BaseProductTest(APITestCase):
         self.TESTER_CELLPHONE = "01012341234"
         self.TESTER_PASSWORD = "123456"
         self.TESTER_NAME = "사장님"
-
-        BaseAccountTest().create_user_by_signup_api(
+        util_test.signup(
             self.TESTER_CELLPHONE,
             self.TESTER_PASSWORD,
             self.TESTER_NAME,
         )
 
-        self.create_seller_products(self.TESTER_CELLPHONE, 40)
-        self.create_seller_product(self.TESTER_CELLPHONE, '슈크림 라떼')
+        self._create_seller_products(self.TESTER_CELLPHONE, 40)
+        self._create_seller_product(self.TESTER_CELLPHONE, '슈크림 라떼')
