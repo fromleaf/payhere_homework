@@ -1,15 +1,16 @@
 # Byte-compiled / optimized
-__pycache__/
 *.py[cod]
+__pycache__/
 
 # Django stuff
-payhere/static/
 db.sqlite3
+payhere/static/
 
 # PyCharm
 .idea
 
 # etc
-.git
-.DS_Store
+*.pdf
 *.swp
+.DS_Store
+.git
